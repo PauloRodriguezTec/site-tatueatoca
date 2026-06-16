@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #111;
+    color: #eee;
+}
+
+header {
+    background-color: #222;
+    padding: 20px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #eee;
+    text-decoration: none;
+}
+
+footer {
+    background-color: #222;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.band-photo {
+    width: 10%;
+    height: auto;
+}
+
