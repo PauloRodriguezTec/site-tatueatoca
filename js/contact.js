@@ -1,7 +1,9 @@
 // Inicializar EmailJS quando a página estiver carregada
 // NOTA: A chave pública do EmailJS é visível no front-end por design do EmailJS.
 // Veja instruções em: https://www.emailjs.com/docs/tutorial/creating-contact-form/
-document.addEventListener("DOMContentLoaded", () => {
+
+// Função para melhorar diagnóstico do carregamento do EmailJS
+function initializeContactForm() {
     if (typeof emailjs === "undefined") {
         const errorMessage = "EmailJS não foi carregado. Verifique o script do CDN e se você abriu a página via HTTP/HTTPS.";
         console.error(errorMessage);
@@ -16,7 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const EMAILJS_PUBLIC_KEY = "YGrdDkNnVxV0Ly7zeF"; // Coloque sua chave pública aqui
     const EMAILJS_SERVICE_ID = "service_tatueatoca";
     const EMAILJS_TEMPLATE_ID = "template_contact";
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
+    try {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    } catch (e) {
+        console.error("Erro ao inicializar EmailJS:", e);
+        const statusEl = document.getElementById("statusMessage");
+        if (statusEl) {
+            statusEl.classList.add("error");
+            statusEl.textContent = "Erro ao inicializar EmailJS: " + e.message;
+        }
+        return;
+    }
 
     const contactForm = document.getElementById("contactForm");
     const statusMessageEl = document.getElementById("statusMessage");
@@ -105,10 +118,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 5000);
         } catch (error) {
             console.error("Erro ao enviar mensagem via EmailJS:", error);
-            const errorDetails = error?.text || error?.statusText || error?.status || error?.message || "Erro desconhecido";
+            const errorDetails = error.text || error.statusText || error.status || error.message || "Erro desconhecido";
             updateStatus(`✗ Erro ao enviar. Tente novamente mais tarde. (${errorDetails})`, "error");
         } finally {
             submitButton.disabled = false;
         }
     });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Aguarda um pouco para garantir que o EmailJS tenha tempo de carregar (especialmente no fallback CDN)
+    setTimeout(initializeContactForm, 500);
 });

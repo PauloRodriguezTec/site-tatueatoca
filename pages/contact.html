@@ -37,7 +37,25 @@
     <footer>
         <p>&copy; 2026 Tatu e a Toca - Todos os direitos reservados</p>
     </footer>
+    <!-- Script principal do EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
+    <!-- Fallback: CDN alternativo em caso de falha -->
+    <script>
+        if (typeof emailjs === "undefined") {
+            console.warn("CDN principal do EmailJS falhou. Tentando CDN alternativo...");
+            var script = document.createElement("script");
+            script.src = "https://unpkg.com/@emailjs/browser@3/dist/index.min.js";
+            script.onerror = function() {
+                console.error("Ambos os CDNs do EmailJS falharam. Verifique sua conexão de internet.");
+                var statusEl = document.getElementById("statusMessage");
+                if (statusEl) {
+                    statusEl.className = "error";
+                    statusEl.textContent = "Erro: Não foi possível carregar EmailJS. Verifique sua conexão de internet e tente novamente.";
+                }
+            };
+            document.head.appendChild(script);
+        }
+    </script>
     <script src="../script.js"></script>
     <script src="../js/contact.js"></script>
 </body>
