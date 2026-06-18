@@ -1,5 +1,5 @@
 // Inicializar EmailJS quando a página estiver carregada
-// IMPORTANTE: Substitua 'YOUR_PUBLIC_KEY' pela sua chave pública do EmailJS
+// NOTA: A chave pública do EmailJS é visível no front-end por design do EmailJS.
 // Veja instruções em: https://www.emailjs.com/docs/tutorial/creating-contact-form/
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof emailjs === "undefined") {
@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    emailjs.init("YGrdDkNnVxV0Ly7zeF");
+    const PUBLIC_KEY = "GrdDkNnVxV0Ly7zeF"; // Coloque sua chave pública aqui
+    emailjs.init(PUBLIC_KEY);
 
     const contactForm = document.getElementById("contactForm");
     const statusMessage = document.getElementById("statusMessage");
@@ -18,37 +19,68 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    contactForm.addEventListener("submit", (e) => {
+    // Melhora de acessibilidade: anúncios de status
+    try {
+        statusMessage.setAttribute("role", "status");
+        statusMessage.setAttribute("aria-live", "polite");
+    } catch (err) {
+        // Elemento pode não suportar atributos, mas seguimos em frente
+    }
+
+    contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = document.getElementById("email").value;
-        const message = document.getElementById("message").value;
+        const emailEl = document.getElementById("email");
+        const messageEl = document.getElementById("message");
+        const email = (emailEl && emailEl.value || "").trim();
+        const message = (messageEl && messageEl.value || "").trim();
+
+        // Validação básica
+        const emailPattern = /^\S+@\S+\.\S+$/;
+        if (!email) {
+            statusMessage.textContent = "Por favor, informe um e‑mail.";
+            statusMessage.className = "error";
+            emailEl && emailEl.focus();
+            return;
+        }
+        if (!emailPattern.test(email)) {
+            statusMessage.textContent = "Por favor, informe um e‑mail válido.";
+            statusMessage.className = "error";
+            emailEl && emailEl.focus();
+            return;
+        }
+        if (!message) {
+            statusMessage.textContent = "Por favor, escreva uma mensagem.";
+            statusMessage.className = "error";
+            messageEl && messageEl.focus();
+            return;
+        }
 
         submitBtn.disabled = true;
         statusMessage.textContent = "Enviando...";
         statusMessage.className = "";
 
-        emailjs.send("service_tatueatoca", "template_contact", {
-            user_email: email,
-            message: message,
-            to_email: "tatueatoca@gmail.com"
-        }).then(
-            () => {
-                statusMessage.textContent = "✓ Email enviado com sucesso!";
-                statusMessage.className = "success";
-                contactForm.reset();
-                submitBtn.disabled = false;
+        try {
+            await emailjs.send("service_tatueatoca", "template_contact", {
+                user_email: email,
+                message: message,
+                to_email: "tatueatoca@gmail.com"
+            });
 
-                setTimeout(() => {
-                    statusMessage.textContent = "";
-                }, 5000);
-            },
-            (error) => {
-                console.error("Erro ao enviar:", error);
-                statusMessage.textContent = "✗ Erro ao enviar. Tente novamente.";
-                statusMessage.className = "error";
-                submitBtn.disabled = false;
-            }
-        );
+            statusMessage.textContent = "✓ Sua mensagem foi enviada! Em breve entraremos em contato.";
+            statusMessage.className = "success";
+            contactForm.reset();
+
+            setTimeout(() => {
+                statusMessage.textContent = "";
+                statusMessage.className = "";
+            }, 5000);
+        } catch (error) {
+            console.error("Erro ao enviar mensagem via EmailJS:", error);
+            statusMessage.textContent = "✗ Erro ao enviar. Tente novamente mais tarde.";
+            statusMessage.className = "error";
+        } finally {
+            submitBtn.disabled = false;
+        }
     });
 });
