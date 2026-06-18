@@ -7,22 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const PUBLIC_KEY = "GrdDkNnVxV0Ly7zeF"; // Coloque sua chave pública aqui
-    emailjs.init(PUBLIC_KEY);
+    const EMAILJS_PUBLIC_KEY = "GrdDkNnVxV0Ly7zeF"; // Coloque sua chave pública aqui
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 
     const contactForm = document.getElementById("contactForm");
-    const statusMessage = document.getElementById("statusMessage");
-    const submitBtn = document.querySelector(".submit-btn");
+    const statusMessageEl = document.getElementById("statusMessage");
+    const submitButton = document.querySelector(".submit-btn");
 
-    if (!contactForm || !statusMessage || !submitBtn) {
+    if (!contactForm || !statusMessageEl || !submitButton) {
         console.error("Elementos do formulário de contato não foram encontrados no DOM.");
         return;
     }
 
     // Melhora de acessibilidade: anúncios de status
     try {
-        statusMessage.setAttribute("role", "status");
-        statusMessage.setAttribute("aria-live", "polite");
+        statusMessageEl.setAttribute("role", "status");
+        statusMessageEl.setAttribute("aria-live", "polite");
     } catch (err) {
         // Elemento pode não suportar atributos, mas seguimos em frente
     }
@@ -30,35 +30,35 @@ document.addEventListener("DOMContentLoaded", () => {
     contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const emailEl = document.getElementById("email");
-        const messageEl = document.getElementById("message");
-        const email = (emailEl && emailEl.value || "").trim();
-        const message = (messageEl && messageEl.value || "").trim();
+        const emailInput = document.getElementById("email");
+        const messageInput = document.getElementById("message");
+        const email = (emailInput?.value ?? "").trim();
+        const message = (messageInput?.value ?? "").trim();
 
         // Validação básica
         const emailPattern = /^\S+@\S+\.\S+$/;
         if (!email) {
-            statusMessage.textContent = "Por favor, informe um e‑mail.";
-            statusMessage.className = "error";
-            emailEl && emailEl.focus();
+            statusMessageEl.textContent = "Por favor, informe um e-mail.";
+            statusMessageEl.className = "error";
+            emailInput?.focus();
             return;
         }
         if (!emailPattern.test(email)) {
-            statusMessage.textContent = "Por favor, informe um e‑mail válido.";
-            statusMessage.className = "error";
-            emailEl && emailEl.focus();
+            statusMessageEl.textContent = "Por favor, informe um e-mail válido.";
+            statusMessageEl.className = "error";
+            emailInput?.focus();
             return;
         }
         if (!message) {
-            statusMessage.textContent = "Por favor, escreva uma mensagem.";
-            statusMessage.className = "error";
-            messageEl && messageEl.focus();
+            statusMessageEl.textContent = "Por favor, escreva uma mensagem.";
+            statusMessageEl.className = "error";
+            messageInput?.focus();
             return;
         }
 
-        submitBtn.disabled = true;
-        statusMessage.textContent = "Enviando...";
-        statusMessage.className = "";
+        submitButton.disabled = true;
+        statusMessageEl.textContent = "Enviando...";
+        statusMessageEl.className = "";
 
         try {
             await emailjs.send("service_tatueatoca", "template_contact", {
@@ -67,20 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 to_email: "tatueatoca@gmail.com"
             });
 
-            statusMessage.textContent = "✓ Sua mensagem foi enviada! Em breve entraremos em contato.";
-            statusMessage.className = "success";
+            statusMessageEl.textContent = "✓ Sua mensagem foi enviada com sucesso! Obrigado pelo contato.";
+            statusMessageEl.className = "success";
             contactForm.reset();
 
             setTimeout(() => {
-                statusMessage.textContent = "";
-                statusMessage.className = "";
+                statusMessageEl.textContent = "";
+                statusMessageEl.className = "";
             }, 5000);
         } catch (error) {
             console.error("Erro ao enviar mensagem via EmailJS:", error);
-            statusMessage.textContent = "✗ Erro ao enviar. Tente novamente mais tarde.";
-            statusMessage.className = "error";
+            statusMessageEl.textContent = "✗ Erro ao enviar. Tente novamente mais tarde.";
+            statusMessageEl.className = "error";
         } finally {
-            submitBtn.disabled = false;
+            submitButton.disabled = false;
         }
     });
 });
