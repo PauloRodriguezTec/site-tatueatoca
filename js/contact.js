@@ -1,132 +1,131 @@
-// Inicializar EmailJS quando a página estiver carregada
-// NOTA: A chave pública do EmailJS é visível no front-end por design do EmailJS.
-// Veja instruções em: https://www.emailjs.com/docs/tutorial/creating-contact-form/
+// contact.js — implementação limpa para carregar EmailJS e gerenciar o formulário
+// Mantém as funções: carregamento do SDK, inicialização e envio via EmailJS
 
-// Função para melhorar diagnóstico do carregamento do EmailJS
+// Configurações (substitua pelos seus valores do EmailJS)
+const EMAILJS_PUBLIC_KEY = "YGrdDkNnVxV0Ly7zeF";
+const EMAILJS_SERVICE_ID = "service_829zwwc";
+const EMAILJS_TEMPLATE_ID = "template_fcpwiws";
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Falha ao carregar script: ' + src));
+        document.head.appendChild(s);
+    });
+}
+
+function setStatus(el, message, type = '') {
+    if (!el) return;
+    el.textContent = message;
+    el.className = type;
+}
+
 function initializeContactForm() {
-    if (typeof emailjs === "undefined") {
-        const errorMessage = "EmailJS não foi carregado. Verifique o script do CDN e se você abriu a página via HTTP/HTTPS.";
-        console.error(errorMessage);
-        const initialStatusElement = document.getElementById("statusMessage");
-        if (initialStatusElement) {
-            initialStatusElement.classList.add("error");
-            initialStatusElement.textContent = errorMessage;
-        }
+    if (typeof emailjs === 'undefined') {
+        console.error('EmailJS não disponível no escopo global.');
+        setStatus(document.getElementById('statusMessage'), 'Erro: EmailJS não carregado.', 'error');
         return;
     }
 
-    const EMAILJS_PUBLIC_KEY = "YGrdDkNnVxV0Ly7zeF"; // Coloque sua chave pública aqui
-    const EMAILJS_SERVICE_ID = "service_tatueatoca";
-    const EMAILJS_TEMPLATE_ID = "template_contact";
-    
     try {
         emailjs.init(EMAILJS_PUBLIC_KEY);
-    } catch (e) {
-        console.error("Erro ao inicializar EmailJS:", e);
-        const statusEl = document.getElementById("statusMessage");
-        if (statusEl) {
-            statusEl.classList.add("error");
-            statusEl.textContent = "Erro ao inicializar EmailJS: " + e.message;
-        }
-        return;
-    }
-
-    const contactForm = document.getElementById("contactForm");
-    const statusMessageEl = document.getElementById("statusMessage");
-    const submitButton = document.querySelector(".submit-btn");
-
-    if (!contactForm || !statusMessageEl || !submitButton) {
-        const errorMessage = "Elementos do formulário de contato não foram encontrados no DOM.";
-        console.error(errorMessage, { contactForm, statusMessageEl, submitButton });
-        if (statusMessageEl) {
-            statusMessageEl.classList.add("error");
-            statusMessageEl.textContent = errorMessage;
-        }
-        return;
-    }
-
-    const updateStatus = (message, type = "") => {
-        statusMessageEl.textContent = message;
-        statusMessageEl.className = type;
-        console.log("Status do formulário:", message, type);
-    };
-
-    // Melhora de acessibilidade: anúncios de status
-    try {
-        statusMessageEl.setAttribute("role", "status");
-        statusMessageEl.setAttribute("aria-live", "polite");
     } catch (err) {
-        console.warn("Não foi possível aplicar atributos de acessibilidade ao elemento de status.", err);
+        console.error('Erro ao inicializar EmailJS:', err);
+        setStatus(document.getElementById('statusMessage'), 'Erro ao inicializar EmailJS.', 'error');
+        return;
     }
 
-    console.log("EmailJS inicializado com sucesso.", { EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID });
+    const form = document.getElementById('contactForm');
+    const statusEl = document.getElementById('statusMessage');
+    const submitBtn = document.querySelector('.submit-btn');
 
-    contactForm.addEventListener("submit", async (e) => {
+    if (!form || !statusEl || !submitBtn) {
+        console.error('Elementos do formulário não encontrados.', { form, statusEl, submitBtn });
+        setStatus(statusEl, 'Erro: elementos do formulário não encontrados.', 'error');
+        return;
+    }
+
+    // Acessibilidade
+    statusEl.setAttribute('role', 'status');
+    statusEl.setAttribute('aria-live', 'polite');
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const emailInput = document.getElementById("email");
-        const messageInput = document.getElementById("message");
-        const email = emailInput && emailInput.value ? emailInput.value.trim() : "";
-        const message = messageInput && messageInput.value ? messageInput.value.trim() : "";
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        const email = emailInput ? emailInput.value.trim() : '';
+        const message = messageInput ? messageInput.value.trim() : '';
 
-        // Validação básica
         const emailPattern = /^\S+@\S+\.\S+$/;
         if (!email) {
-            updateStatus("Por favor, informe um e-mail.", "error");
-            if (emailInput) {
-                emailInput.focus();
-            }
+            setStatus(statusEl, 'Por favor, informe um e-mail.', 'error');
+            emailInput && emailInput.focus();
             return;
         }
         if (!emailPattern.test(email)) {
-            updateStatus("Por favor, informe um e-mail válido.", "error");
-            if (emailInput) {
-                emailInput.focus();
-            }
+            setStatus(statusEl, 'Por favor, informe um e-mail válido.', 'error');
+            emailInput && emailInput.focus();
             return;
         }
         if (!message) {
-            updateStatus("Por favor, escreva uma mensagem.", "error");
-            if (messageInput) {
-                messageInput.focus();
-            }
+            setStatus(statusEl, 'Por favor, escreva uma mensagem.', 'error');
+            messageInput && messageInput.focus();
             return;
         }
 
-        submitButton.disabled = true;
-        updateStatus("Enviando...", "");
+        submitBtn.disabled = true;
+        setStatus(statusEl, 'Enviando...', '');
 
         const templateParams = {
             user_email: email,
             from_email: email,
             reply_to: email,
             message: message,
-            to_email: "tatueatoca@gmail.com"
+            to_email: 'tatueatoca@gmail.com'
         };
 
         try {
-            console.log("Enviando EmailJS com parâmetros:", templateParams);
-            const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-            console.log("EmailJS envio concluído:", response);
-
-            updateStatus("✓ Sua mensagem foi enviada com sucesso! Obrigado pelo contato.", "success");
-            contactForm.reset();
-
-            setTimeout(() => {
-                statusMessageEl.textContent = "";
-                statusMessageEl.className = "";
-            }, 5000);
+            const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            console.log('Envio EmailJS:', res);
+            setStatus(statusEl, '✓ Sua mensagem foi enviada com sucesso!', 'success');
+            form.reset();
+            setTimeout(() => setStatus(statusEl, '', ''), 5000);
         } catch (error) {
-            console.error("Erro ao enviar mensagem via EmailJS:", error);
-            const errorDetails = error.text || error.statusText || error.status || error.message || "Erro desconhecido";
-            updateStatus(`✗ Erro ao enviar. Tente novamente mais tarde. (${errorDetails})`, "error");
+            console.error('Erro ao enviar via EmailJS:', error);
+            const details = (error && (error.text || error.message)) || 'Erro desconhecido';
+            setStatus(statusEl, `✗ Erro ao enviar. (${details})`, 'error');
         } finally {
-            submitButton.disabled = false;
+            submitBtn.disabled = false;
         }
     });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Aguarda um pouco para garantir que o EmailJS tenha tempo de carregar (especialmente no fallback CDN)
-    setTimeout(initializeContactForm, 500);
+// Carrega o SDK do EmailJS e inicializa o formulário
+document.addEventListener('DOMContentLoaded', async () => {
+    const primary = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
+    const fallback = 'https://unpkg.com/@emailjs/browser@3/dist/index.min.js';
+
+    if (typeof emailjs === 'undefined') {
+        try {
+            await loadScript(primary);
+            console.log('EmailJS carregado via CDN principal.');
+        } catch (err1) {
+            console.warn('Falha no CDN principal, tentando fallback...', err1);
+            try {
+                await loadScript(fallback);
+                console.log('EmailJS carregado via CDN alternativo.');
+            } catch (err2) {
+                console.error('Não foi possível carregar EmailJS de ambos CDNs.', err2);
+                setStatus(document.getElementById('statusMessage'), 'Erro: não foi possível carregar EmailJS.', 'error');
+                return;
+            }
+        }
+    }
+
+    // Inicializa o formulário após o SDK estar disponível
+    initializeContactForm();
 });
