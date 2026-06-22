@@ -149,13 +149,13 @@
 		const loginForm = document.getElementById('loginForm');
 		const closeModalBtn = document.getElementById('closeModalBtn');
 		const editButton = document.getElementById('galleryEditButton');
-		const editorContainer = document.getElementById('galleryEditorContainer');
+		const galleryEditorModal = document.getElementById('galleryEditorModal');
 		const logoutBtn = document.getElementById('galleryLogoutBtn');
 		const authMessage = document.getElementById('authMessage');
 
 		function updateEditorVisibility() {
 			const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
-			if (editorContainer) editorContainer.classList.toggle('hidden', !loggedIn);
+			if (galleryEditorModal) galleryEditorModal.classList.toggle('hidden', !loggedIn);
 			render();
 			if (authMessage) {
 				authMessage.textContent = '';
@@ -192,9 +192,12 @@
 			editButton.addEventListener('click', () => {
 				const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
 				if (loggedIn) {
-					if (editorContainer) {
-						editorContainer.classList.toggle('hidden');
-						editorContainer.scrollIntoView({ behavior: 'smooth' });
+					if (galleryEditorModal) {
+						galleryEditorModal.classList.toggle('hidden');
+						if (!galleryEditorModal.classList.contains('hidden')) {
+							const first = galleryEditorModal.querySelector('input, button, textarea');
+							if (first) first.focus();
+						}
 					}
 				} else {
 					if (loginModal) {
@@ -204,6 +207,20 @@
 					}
 				}
 			});
+		const closeGalleryEditorBtn = document.getElementById('closeGalleryEditor');
+		if (closeGalleryEditorBtn) {
+			closeGalleryEditorBtn.addEventListener('click', () => {
+				if (galleryEditorModal) galleryEditorModal.classList.add('hidden');
+			});
+		}
+
+		if (galleryEditorModal) {
+			galleryEditorModal.addEventListener('click', event => {
+				if (event.target === galleryEditorModal) {
+					galleryEditorModal.classList.add('hidden');
+				}
+			});
+		}
 		}
 
 		if (closeModalBtn) {

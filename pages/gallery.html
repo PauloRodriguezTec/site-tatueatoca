@@ -27,13 +27,16 @@
                 <button id="galleryEditButton" class="edit-icon-btn" aria-label="Abrir área de edição">✎</button>
                 <span>Toque no ícone para editar a galeria</span>
             </div>
-            <div id="galleryEditorContainer" class="hidden">
-                <div class="editor-header">
-                    <h3>Editar galeria</h3>
-                    <button id="galleryLogoutBtn" class="submit-btn secondary-btn">Sair</button>
-                </div>
-                <div class="admin-warning">
-                    <p>Somente usuários autorizados podem editar a galeria. As alterações são salvas localmente neste navegador.</p>
+            <div id="galleryEditorModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="galleryEditorTitle">
+                <div class="modal-content">
+                    <button id="closeGalleryEditor" class="modal-close" aria-label="Fechar editor">×</button>
+                    <div class="editor-header">
+                        <h3 id="galleryEditorTitle">Editar galeria</h3>
+                        <button id="galleryLogoutBtn" class="submit-btn secondary-btn">Sair</button>
+                    </div>
+                    <div class="admin-warning">
+                        <p>Somente usuários autorizados podem editar a galeria. As alterações são salvas localmente neste navegador.</p>
+                    </div>
                 </div>
             </div>
             <form id="gallery-form">

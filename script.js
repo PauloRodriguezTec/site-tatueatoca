@@ -30,7 +30,7 @@ function initializeShowsPage() {
     const showFormMessage = document.getElementById('showFormMessage');
     const scheduleContainer = document.getElementById('scheduleContainer');
     const loginForm = document.getElementById('loginForm');
-    const editorContainer = document.getElementById('editorContainer');
+    const showEditorModal = document.getElementById('showEditorModal');
     const logoutBtn = document.getElementById('logoutBtn');
     const addShowForm = document.getElementById('addShowForm');
     const editScheduleTableBody = document.querySelector('#editScheduleTable tbody');
@@ -143,7 +143,7 @@ function initializeShowsPage() {
 
     function updateEditorVisibility() {
         const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
-        editorContainer.classList.toggle('hidden', !loggedIn);
+        if (showEditorModal) showEditorModal.classList.toggle('hidden', !loggedIn);
         authMessage.textContent = '';
         if (loggedIn) {
             document.getElementById('loginForm').classList.add('hidden');
@@ -198,13 +198,34 @@ function initializeShowsPage() {
     editButton.addEventListener('click', () => {
         const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
         if (loggedIn) {
-            editorContainer.classList.toggle('hidden');
-            editorContainer.scrollIntoView({ behavior: 'smooth' });
+            if (showEditorModal) {
+                showEditorModal.classList.toggle('hidden');
+                if (!showEditorModal.classList.contains('hidden')) {
+                    // focus first input inside modal
+                    const firstInput = showEditorModal.querySelector('input, button, textarea');
+                    if (firstInput) firstInput.focus();
+                }
+            }
         } else {
             loginModal.classList.remove('hidden');
             document.getElementById('username').focus();
         }
     });
+
+    const closeShowEditorBtn = document.getElementById('closeShowEditor');
+    if (closeShowEditorBtn) {
+        closeShowEditorBtn.addEventListener('click', () => {
+            if (showEditorModal) showEditorModal.classList.add('hidden');
+        });
+    }
+
+    if (showEditorModal) {
+        showEditorModal.addEventListener('click', event => {
+            if (event.target === showEditorModal) {
+                showEditorModal.classList.add('hidden');
+            }
+        });
+    }
 
     closeModalBtn.addEventListener('click', () => {
         loginModal.classList.add('hidden');
