@@ -80,11 +80,15 @@ function initializeContactForm() {
         submitBtn.disabled = true;
         setStatus(statusEl, 'Enviando...', '');
 
+        // Inclui o e-mail do remetente no corpo da mensagem para garantir
+        // que o endereço apareça no e-mail recebido, mesmo que o provedor
+        // de e-mail substitua o campo From por razões de segurança.
+        const messageWithSender = `Remetente: ${email}\nEmail: ${email}\n\n${message}`;
+
         const templateParams = {
-            user_email: email,
-            from_email: email,
+            sender_email: email,
             reply_to: email,
-            message: message,
+            message: messageWithSender,
             to_email: 'tatueatoca@gmail.com'
         };
 
