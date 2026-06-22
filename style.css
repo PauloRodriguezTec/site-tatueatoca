@@ -374,7 +374,7 @@ footer {
     margin-bottom: 16px;
 }
 
-.modal-content .form-group label {
+..modal-content .form-group label {
     color: #f5f5f5;
 }
 
@@ -382,6 +382,60 @@ footer {
     width: 100%;
     padding: 14px 16px;
     font-size: 16px;
+}
+
+.modal-form {
+    display: grid;
+    gap: 14px;
+}
+
+#gallery-form > div {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#gallery-form label {
+    color: #ddd;
+    display: block;
+}
+
+#gallery-form input[type="text"],
+#gallery-form input[type="url"],
+#gallery-form input[type="file"],
+#gallery-form select {
+    width: 100%;
+    padding: 10px;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 14px;
+}
+
+#gallery-form button[type="submit"],
+#gallery-form button[type="button"] {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background: #252525;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#gallery-form button[type="submit"] {
+    background: #ff6b00;
+    border-color: #ff6b00;
+}
+
+#gallery-form button[type="submit"]:hover,
+#gallery-form button[type="button"]:hover {
+    background-color: #333;
+    transform: translateY(-1px);
 }
 
 .modal-content input {

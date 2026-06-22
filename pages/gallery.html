@@ -37,38 +37,39 @@
                     <div class="admin-warning">
                         <p>Somente usuários autorizados podem editar a galeria. As alterações são salvas localmente neste navegador.</p>
                     </div>
+
+                    <form id="gallery-form" class="modal-form">
+                        <h3>Adicionar foto / vídeo</h3>
+                        <label>
+                            Tipo:
+                            <select id="item-type">
+                                <option value="image">Foto</option>
+                                <option value="video">Vídeo</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Arquivo local:
+                            <input type="file" id="item-file" accept="image/*,video/*">
+                        </label>
+
+                        <label>
+                            Ou link externo:
+                            <input type="url" id="item-url" placeholder="https://...">
+                        </label>
+
+                        <label>
+                            Descrição (opcional):
+                            <input type="text" id="item-desc" maxlength="200" placeholder="Pequena descrição">
+                        </label>
+
+                        <div>
+                            <button type="submit">Adicionar</button>
+                            <button type="button" id="clear-gallery">Limpar galeria</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <form id="gallery-form">
-                <h3>Adicionar foto / vídeo</h3>
-                <label>
-                    Tipo:
-                    <select id="item-type">
-                        <option value="image">Foto</option>
-                        <option value="video">Vídeo</option>
-                    </select>
-                </label>
-
-                <label>
-                    Arquivo local:
-                    <input type="file" id="item-file" accept="image/*,video/*">
-                </label>
-
-                <label>
-                    Ou link externo:
-                    <input type="url" id="item-url" placeholder="https://...">
-                </label>
-
-                <label>
-                    Descrição (opcional):
-                    <input type="text" id="item-desc" maxlength="200" placeholder="Pequena descrição">
-                </label>
-
-                <div>
-                    <button type="submit">Adicionar</button>
-                    <button type="button" id="clear-gallery">Limpar galeria</button>
-                </div>
-            </form>
 
             <div id="gallery-grid" aria-live="polite"></div>
         </section>
