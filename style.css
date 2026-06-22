@@ -246,6 +246,40 @@ footer {
     color: #bbb;
 }
 
+/* Gallery styles */
+#gallery-app {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+#gallery-form {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    background: #161616;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+}
+
+#gallery-form label { color: #ddd; display: block; }
+#gallery-form input[type="text"],
+#gallery-form input[type="url"] { width: 100%; padding: 8px; background:#0f0f0f; border:1px solid #333; color:#eee }
+
+#gallery-form div { grid-column: 1 / -1; display:flex; gap:8px }
+
+#gallery-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-top:16px }
+.gallery-item { background:#0f0f0f; padding:8px; border-radius:8px; border:1px solid #262626; position:relative }
+.gallery-item img, .gallery-item video { width:100%; height: auto; display:block; border-radius:6px }
+.gallery-item figcaption { margin-top:6px; color:#ccc; font-size:14px }
+.gallery-delete { position:absolute; top:8px; right:8px; background:#2b2b2b; border:1px solid #444; color:#fff; padding:6px 8px; border-radius:6px; cursor:pointer }
+
+@media(max-width:720px){
+    #gallery-form{ grid-template-columns:1fr }
+}
+
 .admin-trigger {
     display: flex;
     align-items: center;
