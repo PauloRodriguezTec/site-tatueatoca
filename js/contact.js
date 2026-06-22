@@ -2,9 +2,9 @@
 // Mantém as funções: carregamento do SDK, inicialização e envio via EmailJS
 
 // Configurações (substitua pelos seus valores do EmailJS)
-const EMAILJS_PUBLIC_KEY = "YGrdDkNnVxV0Ly7zeF";
+const EMAILJS_PUBLIC_KEY = "1HYvziLw6J92Qr-EC"; // Substitua pelo seu Public Key do EmailJS
 const EMAILJS_SERVICE_ID = "service_829zwwc";
-const EMAILJS_TEMPLATE_ID = "template_fcpwiws";
+const EMAILJS_TEMPLATE_ID = "template_f8cfr6o";
 
 function loadScript(src) {
     return new Promise((resolve, reject) => {
