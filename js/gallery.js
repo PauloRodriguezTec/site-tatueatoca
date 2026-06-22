@@ -155,7 +155,8 @@
 
 		function updateEditorVisibility() {
 			const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
-			if (galleryEditorModal) galleryEditorModal.classList.toggle('hidden', !loggedIn);
+			// keep gallery editor modal hidden by default; only open when user clicks the edit icon
+			if (galleryEditorModal) galleryEditorModal.classList.add('hidden');
 			render();
 			if (authMessage) {
 				authMessage.textContent = '';

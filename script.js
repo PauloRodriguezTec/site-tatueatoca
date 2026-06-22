@@ -143,7 +143,8 @@ function initializeShowsPage() {
 
     function updateEditorVisibility() {
         const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
-        if (showEditorModal) showEditorModal.classList.toggle('hidden', !loggedIn);
+        // keep editor modal hidden by default; only open when user clicks the edit icon
+        if (showEditorModal) showEditorModal.classList.add('hidden');
         authMessage.textContent = '';
         if (loggedIn) {
             document.getElementById('loginForm').classList.add('hidden');
