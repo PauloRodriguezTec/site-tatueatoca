@@ -30,20 +30,11 @@
             </div>
         </section>
         <section class="show-admin">
-            <div id="authContainer">
-                <h3>Área de edição</h3>
-                <form id="loginForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="username">Usuário</label>
-                        <input type="text" id="username" autocomplete="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <input type="password" id="password" autocomplete="current-password" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Entrar</button>
-                    <p id="authMessage" class="status-message"></p>
-                </form>
+            <div class="admin-trigger">
+                <button id="editButton" class="edit-icon-btn" aria-label="Abrir área de edição">
+                    ✎
+                </button>
+                <span>Toque no ícone para editar a agenda</span>
             </div>
             <div id="editorContainer" class="hidden">
                 <div class="editor-header">
@@ -88,6 +79,24 @@
                 </form>
             </div>
         </section>
+        <div id="loginModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+            <div class="modal-content">
+                <button id="closeModalBtn" class="modal-close" aria-label="Fechar login">×</button>
+                <h3 id="loginTitle">Login de edição</h3>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Usuário</label>
+                        <input type="text" id="username" autocomplete="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Entrar</button>
+                    <p id="authMessage" class="status-message"></p>
+                </form>
+            </div>
+        </div>
     </main>
     <footer>
         <p>&copy; 2026 Tatu e a Toca - Todos os direitos reservados</p>

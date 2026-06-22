@@ -38,6 +38,9 @@ function initializeShowsPage() {
     const showPlaceInput = document.getElementById('showPlace');
     const showCityInput = document.getElementById('showCity');
     const showNotesInput = document.getElementById('showNotes');
+    const editButton = document.getElementById('editButton');
+    const loginModal = document.getElementById('loginModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
     let editIndex = null;
 
@@ -178,6 +181,7 @@ function initializeShowsPage() {
         const password = document.getElementById('password').value;
         if (username === USERNAME && password === PASSWORD) {
             sessionStorage.setItem(AUTH_KEY, 'true');
+            loginModal.classList.add('hidden');
             updateEditorVisibility();
         } else {
             authMessage.textContent = 'Usuário ou senha incorretos.';
@@ -189,6 +193,27 @@ function initializeShowsPage() {
         sessionStorage.removeItem(AUTH_KEY);
         clearEditForm();
         updateEditorVisibility();
+    });
+
+    editButton.addEventListener('click', () => {
+        const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
+        if (loggedIn) {
+            editorContainer.classList.toggle('hidden');
+            editorContainer.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            loginModal.classList.remove('hidden');
+            document.getElementById('username').focus();
+        }
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        loginModal.classList.add('hidden');
+    });
+
+    loginModal.addEventListener('click', event => {
+        if (event.target === loginModal) {
+            loginModal.classList.add('hidden');
+        }
     });
 
     addShowForm.addEventListener('submit', event => {
