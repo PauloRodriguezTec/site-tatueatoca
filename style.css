@@ -138,3 +138,106 @@ footer {
 #statusMessage.error {
     color: #f44336;
 }
+
+.hidden {
+    display: none !important;
+}
+
+.agenda {
+    max-width: 960px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+}
+
+.agenda-info {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #ccc;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #181818;
+}
+
+.schedule-table th,
+.schedule-table td {
+    border: 1px solid #333;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.schedule-table th {
+    background-color: #222;
+    color: #ff6b00;
+}
+
+.schedule-table tbody tr:nth-child(even) {
+    background-color: #131313;
+}
+
+.actions-cell {
+    white-space: nowrap;
+}
+
+.table-button {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #eee;
+    padding: 6px 10px;
+    margin-right: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.table-button:hover {
+    background-color: #444;
+}
+
+.table-button.danger {
+    border-color: #b33;
+    color: #ff9a9a;
+}
+
+.secondary-btn {
+    background-color: #444;
+}
+
+.admin-warning {
+    max-width: 960px;
+    margin: 0 auto 15px;
+    padding: 15px 20px;
+    background-color: #1a1a1a;
+    border-left: 4px solid #ff6b00;
+    color: #ddd;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.status-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.status-message.success {
+    color: #4caf50;
+}
+
+.status-message.error {
+    color: #f44336;
+}
+
+.empty-schedule {
+    padding: 20px;
+    color: #bbb;
+}

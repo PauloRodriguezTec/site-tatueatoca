@@ -21,7 +21,73 @@
     </header>
     <main>
         <h2>Shows</h2>
-        <p>Agenda de shows em breve...</p>
+        <section class="agenda">
+            <div class="agenda-info">
+                <p>Confira a agenda mensal dos nossos shows. A lista é organizada automaticamente por data e você pode editar as informações com login.</p>
+            </div>
+            <div id="scheduleContainer">
+                <div class="schedule-loading">Carregando agenda...</div>
+            </div>
+        </section>
+        <section class="show-admin">
+            <div id="authContainer">
+                <h3>Área de edição</h3>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Usuário</label>
+                        <input type="text" id="username" autocomplete="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Entrar</button>
+                    <p id="authMessage" class="status-message"></p>
+                </form>
+            </div>
+            <div id="editorContainer" class="hidden">
+                <div class="editor-header">
+                    <h3>Editar agenda</h3>
+                    <button id="logoutBtn" class="submit-btn secondary-btn">Sair</button>
+                </div>
+                <div class="admin-warning">
+                    <p>Somente usuários autorizados podem editar a agenda. As alterações são salvas localmente neste navegador.</p>
+                </div>
+                <table class="schedule-table" id="editScheduleTable">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Local</th>
+                            <th>Cidade</th>
+                            <th>Observações</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <form id="addShowForm" class="contact-form">
+                    <h4>Adicionar / Atualizar show</h4>
+                    <div class="form-group">
+                        <label for="showDate">Data</label>
+                        <input type="date" id="showDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="showPlace">Local</label>
+                        <input type="text" id="showPlace" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="showCity">Cidade</label>
+                        <input type="text" id="showCity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="showNotes">Observações</label>
+                        <input type="text" id="showNotes" placeholder="Ex: abertura com DJ, entrada gratuita">
+                    </div>
+                    <button type="submit" class="submit-btn">Salvar show</button>
+                    <p id="showFormMessage" class="status-message"></p>
+                </form>
+            </div>
+        </section>
     </main>
     <footer>
         <p>&copy; 2026 Tatu e a Toca - Todos os direitos reservados</p>
