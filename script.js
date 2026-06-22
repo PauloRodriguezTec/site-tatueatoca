@@ -5,18 +5,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Destaca o link da página atual no menu
     const currentPath = window.location.pathname;
     const currentPage = currentPath.split('/').pop() || 'index.html';
+    const currentPageBase = currentPage.replace(/\.html$/, '');
     
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
         const linkPage = href.split('/').pop();
-        
-        if (linkPage === currentPage || (currentPage === '' && href.includes('index'))) {
+        if (linkPage === currentPage || linkPage === currentPageBase || (currentPage === '' && href.includes('index'))) {
             link.classList.add('active');
         }
     });
     
-    if (currentPage === 'shows.html') {
+    if (currentPageBase === 'shows' && typeof initializeShowsPage === 'function') {
         initializeShowsPage();
     }
 });
