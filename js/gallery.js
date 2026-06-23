@@ -152,10 +152,10 @@
 		const galleryEditorModal = document.getElementById('galleryEditorModal');
 		const logoutBtn = document.getElementById('galleryLogoutBtn');
 		const authMessage = document.getElementById('authMessage');
+		let pendingEditAfterLogin = false;
 
 		function updateEditorVisibility() {
 			const loggedIn = sessionStorage.getItem(AUTH_KEY) === 'true';
-			// keep gallery editor modal hidden by default; only open when user clicks the edit icon
 			if (galleryEditorModal) galleryEditorModal.classList.add('hidden');
 			render();
 			if (authMessage) {
@@ -175,6 +175,12 @@
 					sessionStorage.setItem(AUTH_KEY, 'true');
 					if (loginModal) loginModal.classList.add('hidden');
 					updateEditorVisibility();
+					if (pendingEditAfterLogin && galleryEditorModal) {
+						galleryEditorModal.classList.remove('hidden');
+						const first = galleryEditorModal.querySelector('input, button, textarea');
+						if (first) first.focus();
+					}
+					pendingEditAfterLogin = false;
 				} else {
 					authMessage.textContent = 'Usuário ou senha incorretos.';
 					authMessage.classList.add('error');
@@ -201,6 +207,7 @@
 						}
 					}
 				} else {
+					pendingEditAfterLogin = true;
 					if (loginModal) {
 						loginModal.classList.remove('hidden');
 						const userField = document.getElementById('username');
@@ -208,6 +215,7 @@
 					}
 				}
 			});
+		}
 		const closeGalleryEditorBtn = document.getElementById('closeGalleryEditor');
 		if (closeGalleryEditorBtn) {
 			closeGalleryEditorBtn.addEventListener('click', () => {
@@ -222,11 +230,11 @@
 				}
 			});
 		}
-		}
 
 		if (closeModalBtn) {
 			closeModalBtn.addEventListener('click', () => {
 				if (loginModal) loginModal.classList.add('hidden');
+				pendingEditAfterLogin = false;
 			});
 		}
 
@@ -234,6 +242,7 @@
 			loginModal.addEventListener('click', event => {
 				if (event.target === loginModal) {
 					loginModal.classList.add('hidden');
+					pendingEditAfterLogin = false;
 				}
 			});
 		}

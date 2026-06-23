@@ -255,26 +255,96 @@ footer {
 
 #gallery-form {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
-    background: #161616;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #2a2a2a;
+    align-items: stretch;
+    background: linear-gradient(180deg, rgba(20,20,20,.96), #121212);
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 107, 0, 0.15);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
 }
 
-#gallery-form label { color: #ddd; display: block; }
+#gallery-form label {
+    color: #eee;
+    display: block;
+    font-weight: 600;
+}
+
 #gallery-form input[type="text"],
-#gallery-form input[type="url"] { width: 100%; padding: 8px; background:#0f0f0f; border:1px solid #333; color:#eee }
+#gallery-form input[type="url"],
+#gallery-form input[type="file"],
+#gallery-form select {
+    width: 100%;
+    padding: 12px 14px;
+    background: #141414;
+    border: 1px solid #333;
+    color: #eee;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.25);
+}
 
-#gallery-form div { grid-column: 1 / -1; display:flex; gap:8px }
+#gallery-form input[type="file"] {
+    padding: 10px 12px;
+}
 
-#gallery-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; margin-top:16px }
-.gallery-item { background:#0f0f0f; padding:8px; border-radius:8px; border:1px solid #262626; position:relative }
-.gallery-item img, .gallery-item video { width:100%; height: auto; display:block; border-radius:6px }
-.gallery-item figcaption { margin-top:6px; color:#ccc; font-size:14px }
-.gallery-delete { position:absolute; top:8px; right:8px; background:#2b2b2b; border:1px solid #444; color:#fff; padding:6px 8px; border-radius:6px; cursor:pointer }
+#gallery-form div {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+#gallery-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    gap: 18px;
+    margin-top: 28px;
+}
+.gallery-item {
+    background: #181818;
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+}
+.gallery-item img,
+.gallery-item video {
+    width:100%;
+    height: auto;
+    display:block;
+    border-radius: 14px;
+}
+.gallery-item figcaption {
+    margin-top: 12px;
+    color:#ccc;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.gallery-delete {
+    position:absolute;
+    top:12px;
+    right:12px;
+    background: rgba(255, 107, 0, 0.95);
+    border: none;
+    color:#111;
+    padding:8px 12px;
+    border-radius: 999px;
+    cursor:pointer;
+    font-weight: 700;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.gallery-delete:hover {
+    transform: scale(1.04);
+    opacity: 0.95;
+}
 
 @media(max-width:720px){
     #gallery-form{ grid-template-columns:1fr }
@@ -329,14 +399,27 @@ footer {
 .modal-content {
     position: relative;
     width: 100%;
-    max-width: 420px;
-    background-color: #1c1c1c;
-    border: 1px solid #2d2d2d;
-    border-radius: 18px;
-    padding: 28px 24px 22px;
-    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
-    transform: translateY(-10px);
+    max-width: 540px;
+    background-color: #121212;
+    border: 1px solid rgba(255, 107, 0, 0.18);
+    border-radius: 22px;
+    padding: 32px 28px 26px;
+    box-shadow: 0 28px 95px rgba(0, 0, 0, 0.45);
+    transform: translateY(-12px);
     animation: slideUp 0.28s ease forwards;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.80);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1000;
+    animation: fadeIn 0.25s ease;
 }
 
 .modal-close {
@@ -365,23 +448,45 @@ footer {
 
 .modal-content h3 {
     margin-top: 0;
-    margin-bottom: 20px;
-    color: #ff6b00;
-    font-size: 24px;
+    margin-bottom: 22px;
+    color: #ff8a2b;
+    font-size: 26px;
+    letter-spacing: 0.02em;
 }
 
 .modal-content .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
-..modal-content .form-group label {
-    color: #f5f5f5;
+.modal-content .form-group label {
+    color: #f0f0f0;
 }
 
-.modal-content .submit-btn {
+.auth-form {
+    display: grid;
+    gap: 16px;
+}
+
+.auth-form .form-group {
+    display: grid;
+    gap: 8px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    background: #171717;
+    color: #eee;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.auth-form .submit-btn {
     width: 100%;
     padding: 14px 16px;
     font-size: 16px;
+    border-radius: 12px;
 }
 
 .modal-form {
